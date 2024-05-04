@@ -61,4 +61,10 @@ function verifyToken(req, res, next) {
   });
 }
 
-module.exports = { authenticateUser, verifyToken };
+// Función para invalidar el token JWT
+function invalidateToken(req, res) {
+  // No es necesario realizar ninguna acción especial aquí, ya que el token se invalidará en el cliente al borrarlo o caducar
+  res.status(200).json({ message: "Token invalidado exitosamente" });
+}
+
+module.exports = { authenticateUser, verifyToken, invalidateToken };

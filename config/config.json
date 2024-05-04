@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "lgomez",
+    "password": "MySQL2024*",
+    "database": "PPW",
+    "host": "192.168.1.96",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "lgomez",
+    "password": "MySQL2024*",
+    "database": "PPW",
+    "host": "192.168.1.96",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "lgomez",
+    "password": "MySQL2024*",
+    "database": "PPW",
+    "host": "192.168.1.96",
+    "dialect": "mysql"
+  }
+}
