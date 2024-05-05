@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const sequelize = require("../config/database");
 
 const User = sequelize.define(
-  "User",
+  "users", // Cambiado de "User" a "users"
   {
     username: {
       type: DataTypes.STRING,
@@ -25,13 +25,11 @@ const User = sequelize.define(
     timestamps: true,
   }
 );
+
 // Antes de crear un usuario, hasheamos la contraseña
 User.beforeCreate(async (user) => {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   user.password = hashedPassword;
 });
-
-// Sincronizar el modelo con la base de datos (crear la tabla si no existe)
-User.sync();
 
 module.exports = User;

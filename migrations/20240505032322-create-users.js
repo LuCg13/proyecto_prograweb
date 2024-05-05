@@ -1,33 +1,28 @@
-// migrations/YYYYMMDDHHMMSS-create-notes.js
+// migrations/YYYYMMDDHHMMSS-create-users.js
 
 "use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("notes", {
+    await queryInterface.createTable("users", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      title: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      content: {
-        type: Sequelize.TEXT,
+      email: {
+        type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
-      userId: {
-        type: Sequelize.INTEGER,
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: "user", // Nombre de la tabla de usuarios
-          key: "id", // Nombre de la columna de ID en la tabla de usuarios
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -43,6 +38,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("notes");
+    await queryInterface.dropTable("users");
   },
 };

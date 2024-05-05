@@ -37,18 +37,24 @@ async function loginUser(req, res) {
 
     // Verificar si el usuario existe
     const user = await User.findOne({ where: { email } });
+    console.log("Usuario encontrado:", user); // Agregar este mensaje de registro
+
     if (!user) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     // Verificar la contraseña
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log("Contraseña ingresada:", password); // Agregar este mensaje de registro
+    console.log("Contraseña almacenada:", user.password); // Agregar este mensaje de registro
+    console.log("Coinciden las contraseñas:", passwordMatch); // Agregar este mensaje de registro
+
     if (!passwordMatch) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     // Generar el token JWT
-    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.status(200).json({ message: "Inicio de sesión exitoso", token });
   } catch (error) {
