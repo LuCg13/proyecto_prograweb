@@ -18,7 +18,7 @@ async function createUser(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crear el usuario en la base de datos con la contraseña hasheada
-    const newUser = await User.create({ username, email, password: hashedPassword });
+    const newUser = await User.create({ username, email, password });
 
     // Generar el token JWT
     const token = jwt.sign({ id: newUser.id, email: newUser.email }, jwtSecret, { expiresIn: "1h" });
@@ -42,8 +42,6 @@ async function loginUser(req, res) {
     if (!user) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
-
-    console.log("Contraseña ingresada:", password);
 
     // Verificar la contraseña
     const passwordMatch = await bcrypt.compare(password, user.password);
