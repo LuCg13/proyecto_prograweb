@@ -43,6 +43,8 @@ async function loginUser(req, res) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
+    console.log("Contraseña ingresada:", password);
+
     // Verificar la contraseña
     const passwordMatch = await bcrypt.compare(password, user.password);
     console.log("Contraseña ingresada:", password); // Agregar este mensaje de registro
