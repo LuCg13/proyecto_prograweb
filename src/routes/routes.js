@@ -5,7 +5,7 @@ const { getNotes, createNote, deleteNote } = require("../controllers/noteControl
 const { createUser, loginUser } = require("../controllers/userController");
 
 // Ruta para crear una nueva cuenta de usuario
-router.post("/signup", createUser);
+router.post("/register", createUser);
 
 // Ruta para iniciar sesión
 router.post("/login", loginUser);

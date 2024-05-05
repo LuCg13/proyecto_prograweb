@@ -1,7 +1,7 @@
 // src/controllers/authController.js
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { User } = require("../models"); // Importamos el modelo de usuario
+const User = require("../models/user");
 
 // Clave secreta para firmar el token JWT
 const JWT_SECRET = process.env.JWT_SECRET || "jwtsecret";

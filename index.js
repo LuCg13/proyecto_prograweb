@@ -1,4 +1,5 @@
-// src/index.js
+require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -10,10 +11,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Welcome to the backend server!");
-});
+// Importar las rutas de routes.js
+const routes = require("./src/routes/routes");
+
+// Usar las rutas de routes.js sin un prefijo
+app.use(routes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
