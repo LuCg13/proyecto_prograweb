@@ -1,7 +1,8 @@
+// src/controllers/userController.js
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET || "jwtsecret"; // Utilizando "jwtsecret" como valor predeterminado
 
 // Función para registrar un nuevo usuario
 async function createUser(req, res) {
@@ -18,7 +19,7 @@ async function createUser(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crear el usuario en la base de datos con la contraseña hasheada
-    const newUser = await User.create({ username, email, password });
+    const newUser = await User.create({ username, email, password: hashedPassword });
 
     // Generar el token JWT
     const token = jwt.sign({ id: newUser.id, email: newUser.email }, jwtSecret, { expiresIn: "1h" });
@@ -54,7 +55,7 @@ async function loginUser(req, res) {
     }
 
     // Generar el token JWT
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, { expiresIn: "1h" });
 
     res.status(200).json({ message: "Inicio de sesión exitoso", token });
   } catch (error) {

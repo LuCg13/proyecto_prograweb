@@ -2,13 +2,13 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-
-// Clave secreta para firmar el token JWT
-const JWT_SECRET = process.env.JWT_SECRET || "jwtsecret";
+const jwtSecret = process.env.JWT_SECRET || "jwtsecret"; // Utilizando "jwtsecret" como valor predeterminado
 
 // Función para generar un token JWT
 function generateToken(user) {
-  return jwt.sign({ user }, JWT_SECRET, { expiresIn: "1h" }); // Expira en 1 hora
+  const token = jwt.sign({ user }, jwtSecret, { expiresIn: "1h" });
+  console.log("Token generado:", token); // Agregar este registro para verificar el token generado
+  return token;
 }
 
 // Middleware para autenticar al usuario
@@ -48,15 +48,18 @@ function verifyToken(req, res, next) {
   // Obtener el token del encabezado de autorización
   const token = req.headers["authorization"];
   if (!token) {
+    console.error("Token de autenticación no proporcionado");
     return res.status(401).json({ error: "Token de autenticación no proporcionado" });
   }
 
   // Verificar el token
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) {
+      console.error("Error al verificar el token:", err);
       return res.status(401).json({ error: "Token de autenticación inválido" });
     }
-    req.user = decoded.user;
+    console.log("Usuario autenticado:", decoded.user); // Agregar este registro para verificar el usuario decodificado
+    req.user = decoded.user; // Corregir la asignación del usuario
     next();
   });
 }

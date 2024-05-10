@@ -2,8 +2,8 @@
 
 const express = require("express");
 const router = express.Router();
-const noteController = require("../controllers/noteController");
-const { verifyToken } = require("../middlewares/authMiddleware");
+const { getNotes, createNote, deleteNote } = require("../controllers/noteController");
+const { verifyToken } = require("../controllers/authController");
 
 // Ruta para obtener las notas del usuario autenticado
 router.get("/notes", verifyToken, getNotes);

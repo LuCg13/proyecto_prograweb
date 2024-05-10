@@ -1,9 +1,9 @@
 // models/note.js
 
 const { DataTypes } = require("sequelize");
-const sequelize = require("../database/connection");
+const sequelize = require("../config/database");
 
-const Note = sequelize.define("Note", {
+const Note = sequelize.define("notes", {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,6 +15,16 @@ const Note = sequelize.define("Note", {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
 });
 

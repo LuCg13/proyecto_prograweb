@@ -1,29 +1,36 @@
-require("dotenv").config();
+// index.js
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
-const sequelize = require("./src/config/database");
-const User = require("./src/models/user");
-
-// Create Express app
-const app = express();
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// Importar las rutas de routes.js
+const dotenv = require("dotenv");
+const db = require("./models/index");
 const routes = require("./src/routes/routes");
 
-// Usar las rutas de routes.js sin un prefijo
-app.use(routes);
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
 
-// Sincronizar el modelo con la base de datos (crear la tabla si no existe)
-sequelize.sync();
-
-// Start server
+const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+// Middleware para analizar solicitudes con cuerpo JSON
+app.use(bodyParser.json());
+
+// Usar las rutas definidas en routes.js
+app.use("/", routes);
+
+// Middleware para manejar errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
 });
+
+// Sincronizar la base de datos y luego iniciar el servidor
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("Database connected and synced");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => console.error("Error connecting to the database:", err));
